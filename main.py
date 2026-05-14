@@ -1,25 +1,28 @@
 import flet as ft
 
-usuarios = {}  
+
+usuarios = {"admin": "12345"}
+
 def main(page: ft.Page):
-    page.title = "App con Login y Registro"
+    page.title = "App Login y Registro"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.padding = 20
     page.spacing = 10
 
-    mensaje = ft.Text("", size=16, color="red")
+    mensaje = ft.Text("", size=16)
 
- 
     def mostrar_login(e=None):
         mensaje.value = ""
         page.controls.clear()
+        usuario_input = ft.TextField(label="Usuario", key="login_usuario")
+        pass_input = ft.TextField(label="Contraseña", password=True, can_reveal_password=True, key="login_pass")
         page.add(
             ft.Text("Inicio de Sesión", size=25),
-            ft.TextField(label="Usuario", key="login_usuario"),
-            ft.TextField(label="Contraseña", password=True, can_reveal_password=True, key="login_pass"),
+            usuario_input,
+            pass_input,
             ft.Row([
-                ft.ElevatedButton("Ingresar", on_click=login),
+                ft.ElevatedButton("Ingresar", on_click=lambda e: login(usuario_input.value, pass_input.value)),
                 ft.TextButton("Registrarse", on_click=mostrar_registro)
             ]),
             mensaje
@@ -29,23 +32,23 @@ def main(page: ft.Page):
     def mostrar_registro(e=None):
         mensaje.value = ""
         page.controls.clear()
+        usuario_input = ft.TextField(label="Usuario", key="reg_usuario")
+        pass_input = ft.TextField(label="Contraseña", password=True, can_reveal_password=True, key="reg_pass")
+        pass2_input = ft.TextField(label="Confirmar Contraseña", password=True, can_reveal_password=True, key="reg_pass2")
         page.add(
             ft.Text("Registro", size=25),
-            ft.TextField(label="Usuario", key="reg_usuario"),
-            ft.TextField(label="Contraseña", password=True, can_reveal_password=True, key="reg_pass"),
-            ft.TextField(label="Confirmar Contraseña", password=True, can_reveal_password=True, key="reg_pass2"),
+            usuario_input,
+            pass_input,
+            pass2_input,
             ft.Row([
-                ft.ElevatedButton("Registrar", on_click=registrar),
+                ft.ElevatedButton("Registrar", on_click=lambda e: registrar(usuario_input.value, pass_input.value, pass2_input.value)),
                 ft.TextButton("Volver al Login", on_click=mostrar_login)
             ]),
             mensaje
         )
         page.update()
 
-    def login(e):
-        usuario = page.get_control("login_usuario").value
-        clave = page.get_control("login_pass").value
-
+    def login(usuario, clave):
         if usuario in usuarios and usuarios[usuario] == clave:
             mensaje.value = f"¡Bienvenido {usuario}!"
             mensaje.color = "green"
@@ -54,11 +57,7 @@ def main(page: ft.Page):
             mensaje.color = "red"
         page.update()
 
-    def registrar(e):
-        usuario = page.get_control("reg_usuario").value
-        clave = page.get_control("reg_pass").value
-        clave2 = page.get_control("reg_pass2").value
-
+    def registrar(usuario, clave, clave2):
         if usuario in usuarios:
             mensaje.value = "El usuario ya existe"
             mensaje.color = "red"
@@ -74,6 +73,6 @@ def main(page: ft.Page):
             mensaje.color = "green"
         page.update()
 
-    mostrar_login()  
+    mostrar_login()
 
 ft.app(target=main)
