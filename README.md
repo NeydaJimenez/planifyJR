@@ -22,9 +22,9 @@ La base de datos almacenará información de usuarios, tareas, recordatorios y e
 ## Neyda Nahomi Jimenez Martinez
 - **Correo:** 23308060610175@cetis61.edu.mx  
 - **Grupo:** 6D Programación  
-<img src="https://via.placeholder.com/100?text=Neyda" alt="Imagen de Neyda" width="100">
+<img src="img/nahomi.jpeg" alt="Nahomi J" width="150">
 
 ## Brisa Rangel Palacios
 - **Correo:** 23308060610256@cetis61.edu.mx  
 - **Grupo:** 6D Programación  
-<img src="https://via.placeholder.com/100?text=Neyda" alt="Imagen de Neyda" width="100">
+<img src="img/brisa.jpeg" alt="Nahomi J" width="150">
