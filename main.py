@@ -200,14 +200,14 @@ def main(page: ft.Page):
             content=ft.Column(
                 [
                     ft.Text(
-                        "Simplifica tu",
+                        "Organizador",
                         size=30,
                         weight="bold",
                         color="white"
                     ),
 
                     ft.Text(
-                        "vida familiar",
+                        "de Tareas",
                         size=30,
                         weight="bold",
                         color="white"
@@ -226,7 +226,7 @@ def main(page: ft.Page):
                     ft.Row(
                         [
                             ft.Text(
-                                "La familia",
+                                "Planify",
                                 size=16,
                                 weight="bold"
                             ),
@@ -256,7 +256,7 @@ def main(page: ft.Page):
                                 ),
 
                                 ft.Text(
-                                    "Clase de natacion",
+                                    "Clase de Programacion",
                                     color="white"
                                 ),
 
