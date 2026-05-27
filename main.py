@@ -58,9 +58,15 @@ def main(page: ft.Page):
 
             smtp.send_message(msg)
 
-    def mini_card(titulo, subtitulo, color, icono):
+    def mini_card(
+        titulo,
+        subtitulo,
+        color,
+        icono,
+        click=None
+    ):
 
-        return ft.Container(
+        card = ft.Container(
             width=145,
             height=100,
             bgcolor=color,
@@ -87,6 +93,11 @@ def main(page: ft.Page):
                     )
                 ]
             )
+        )
+
+        return ft.GestureDetector(
+            content=card,
+            on_tap=click
         )
 
     def abrir_gestor(usuario):
@@ -179,6 +190,130 @@ def main(page: ft.Page):
             tareas.remove(tarea)
 
             actualizar_tareas()
+
+        def cerrar_dialogo(dlg):
+
+            dlg.open = False
+            page.update()
+
+        def abrir_listas(e):
+
+            pendientes = [
+                t["nombre"]
+                for t in tareas
+                if not t["hecho"]
+            ]
+
+            if pendientes:
+
+                contenido = "\n".join(
+                    [f"• {p}" for p in pendientes]
+                )
+
+            else:
+
+                contenido = "No hay tareas pendientes"
+
+            dlg = ft.AlertDialog(
+                title=ft.Text("Tareas pendientes"),
+                content=ft.Text(contenido),
+                actions=[
+                    ft.TextButton(
+                        "Cerrar",
+                        on_click=lambda e:
+                        cerrar_dialogo(dlg)
+                    )
+                ]
+            )
+
+            page.dialog = dlg
+            dlg.open = True
+            page.update()
+
+        def abrir_calendario(e):
+
+            calendario = ft.DatePicker()
+
+            page.overlay.append(calendario)
+
+            calendario.open = True
+
+            page.update()
+
+        def abrir_horario(e):
+
+            pendientes = [
+                t["nombre"]
+                for t in tareas
+                if not t["hecho"]
+            ]
+
+            if pendientes:
+
+                contenido = (
+                    f"Proxima tarea:\n\n{pendientes[0]}"
+                )
+
+            else:
+
+                contenido = (
+                    "No tienes tareas pendientes"
+                )
+
+            dlg = ft.AlertDialog(
+                title=ft.Text("Horario"),
+                content=ft.Text(contenido),
+                actions=[
+                    ft.TextButton(
+                        "Cerrar",
+                        on_click=lambda e:
+                        cerrar_dialogo(dlg)
+                    )
+                ]
+            )
+
+            page.dialog = dlg
+            dlg.open = True
+            page.update()
+
+        def abrir_mensajes(e):
+
+            pendientes = [
+                t["nombre"]
+                for t in tareas
+                if not t["hecho"]
+            ]
+
+            if pendientes:
+
+                contenido = "\n\n".join(
+                    [
+                        f"🔔 Recuerda completar:\n{t}"
+                        for t in pendientes
+                    ]
+                )
+
+            else:
+
+                contenido = (
+                    "No tienes recordatorios pendientes"
+                )
+
+            dlg = ft.AlertDialog(
+                title=ft.Text("Recordatorios"),
+                content=ft.Text(contenido),
+                actions=[
+                    ft.TextButton(
+                        "Cerrar",
+                        on_click=lambda e:
+                        cerrar_dialogo(dlg)
+                    )
+                ]
+            )
+
+            page.dialog = dlg
+            dlg.open = True
+            page.update()
 
         tareas.extend([
             {
@@ -280,14 +415,16 @@ def main(page: ft.Page):
                                 "Listas",
                                 "4 tareas",
                                 "#FFF3CD",
-                                ft.Icons.LIST
+                                ft.Icons.LIST,
+                                abrir_listas
                             ),
 
                             mini_card(
                                 "Calendario",
                                 "6 eventos",
                                 "#E1BEE7",
-                                ft.Icons.CALENDAR_MONTH
+                                ft.Icons.CALENDAR_MONTH,
+                                abrir_calendario
                             )
                         ],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN
@@ -297,16 +434,18 @@ def main(page: ft.Page):
                         [
                             mini_card(
                                 "Horario",
-                                "5 PM reunion",
+                                "Proxima entrega",
                                 "#BBDEFB",
-                                ft.Icons.ACCESS_TIME
+                                ft.Icons.ACCESS_TIME,
+                                abrir_horario
                             ),
 
                             mini_card(
                                 "Mensajes",
-                                "2 nuevos",
+                                "Recordatorios",
                                 "#C8E6C9",
-                                ft.Icons.MESSAGE
+                                ft.Icons.MESSAGE,
+                                abrir_mensajes
                             )
                         ],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN
